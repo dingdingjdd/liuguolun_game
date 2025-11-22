@@ -1,1072 +1,687 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
-  <meta charset="UTF-8">
-  <!-- iPhone 專屬優化：禁止縮放，適配瀏海屏 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>《六國論》燕王談判模擬器</title>
-  <style>
-    /* --- iOS 視覺風格設定 --- */
-    :root {
-      --primary-color: #8B0000;
-      --accent-color: #d32f2f;
-      --text-dark: #1c1c1e;
-      --glass-bg: rgba(255, 255, 255, 0.92);
-      --btn-gradient: linear-gradient(135deg, #8B0000, #b71c1c);
-    }
+    <meta charset="UTF-8">
+    <!-- iPhone 專屬優化：禁止縮放，適配瀏海屏 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>《六國論》燕王談判模擬器</title>
+    <style>
+        /* --- iOS 視覺風格設定 --- */
+        :root {
+            --primary-color: #8B0000;
+            --accent-color: #d32f2f;
+            --text-dark: #1c1c1e;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --btn-gradient: linear-gradient(135deg, #8B0000, #b71c1c);
+        }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Microsoft JhengHei", sans-serif;
-    }
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Microsoft JhengHei", sans-serif;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: url('images/bg_main.jpg') no-repeat center center fixed;
-      background-size: cover;
-      height: 100dvh;
-      width: 100vw;
-      overflow: hidden;
-      color: var(--text-dark);
-      display: flex;
-      flex-direction: column;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            /* 路徑修正: 移除 'images/'，直接使用 'bg_main.jpg' */
+            background: url('bg_main.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100dvh; 
+            width: 100vw;
+            overflow: hidden;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* 背景遮罩 */
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(3px);
-      z-index: -1;
-    }
+        /* 背景遮罩 */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(3px);
+            z-index: -1;
+        }
 
-    /* --- App 主容器 --- */
-    .app-container {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-      position: relative;
-    }
+        /* --- App 主容器 --- */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            position: relative;
+        }
 
-    /* --- 頂部儀表板 (HUD) --- */
-    .hud-header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 10px 15px;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-      z-index: 10;
-      flex-shrink: 0;
-    }
+        /* --- 頂部儀表板 (HUD) --- */
+        .hud-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 10;
+            flex-shrink: 0;
+        }
 
-    .round-info {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 8px;
-    }
+        .round-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-    }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
 
-    .stat-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .stat-label {
-      font-size: 10px;
-      color: #666;
-      margin-bottom: 3px;
-      font-weight: 600;
-    }
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
 
-    .progress-track {
-      width: 100%;
-      height: 6px;
-      background: #e5e5ea;
-      border-radius: 3px;
-      overflow: hidden;
-    }
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: #e5e5ea;
+            border-radius: 3px;
+            overflow: hidden;
+        }
 
-    .progress-fill {
-      height: 100%;
-      transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
+        .progress-fill {
+            height: 100%;
+            transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-    /* --- 中間舞台區 --- */
-    .stage-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      padding: 10px;
-      overflow-y: auto;
-    }
+        /* --- 中間舞台區 --- */
+        .stage-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 10px;
+            overflow-y: auto;
+        }
 
-    .qin-avatar-wrapper {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      border: 4px solid var(--primary-color);
-      overflow: hidden;
-      background: #333;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      margin-bottom: 15px;
-      flex-shrink: 0;
-      transition: transform 0.3s;
-    }
+        .qin-avatar-wrapper {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-color);
+            overflow: hidden;
+            background: #333;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
 
-    .qin-avatar {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+        .qin-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-    .dialogue-bubble {
-      background: var(--glass-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 15px;
-      border-radius: 18px;
-      border-top-left-radius: 4px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      position: relative;
-      animation: popIn 0.3s ease-out;
-    }
+        .dialogue-bubble {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 18px;
+            border-top-left-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 90%;
+            position: relative;
+            animation: popIn 0.3s ease-out;
+        }
 
-    .dialogue-name {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--primary-color);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-      display: block;
-    }
+        .dialogue-name {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+        }
 
-    .dialogue-text {
-      font-size: 15px;
-      line-height: 1.5;
-      color: #000;
-      font-weight: 500;
-    }
+        .dialogue-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #000;
+            font-weight: 500;
+        }
 
-    /* --- 底部操作區 --- */
-    .controls-area {
-      padding: 15px;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 100%);
-      flex-shrink: 0;
-      padding-bottom: calc(15px + env(safe-area-inset-bottom));
-    }
+        /* --- 底部操作區 --- */
+        .controls-area {
+            padding: 15px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            flex-shrink: 0;
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+        }
 
-    .choices-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        .choices-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-    .choice-btn {
-      background: rgba(255, 255, 255, 0.95);
-      border: none;
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-size: 14px;
-      text-align: left;
-      color: #000;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.1s, background 0.2s;
-      position: relative;
-      line-height: 1.4;
-    }
+        .choice-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 14px;
+            text-align: left;
+            color: #000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: transform 0.1s, background 0.2s;
+            position: relative;
+            line-height: 1.4;
+        }
 
-    .choice-btn:active {
-      transform: scale(0.98);
-      background: #f2f2f7;
-    }
+        .choice-btn:active {
+            transform: scale(0.98);
+            background: #f2f2f7;
+        }
 
-    .choice-btn:disabled {
-      opacity: 0.6;
-      background: #e5e5ea;
-      color: #8e8e93;
-    }
+        .choice-btn:disabled {
+            opacity: 0.6;
+            background: #e5e5ea;
+            color: #8e8e93;
+        }
 
-    /* 割地標籤 */
-    .land-badge {
-      background: var(--primary-color);
-      color: white;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 10px;
-      vertical-align: middle;
-      margin-right: 5px;
-      display: inline-block;
-    }
+        /* 割地標籤 */
+        .land-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            vertical-align: middle;
+            margin-right: 5px;
+            display: inline-block;
+        }
 
-    /* --- 全屏 Modal (開始/結束) --- */
-    .fullscreen-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 15, 20, 0.95);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
-      text-align: center;
-      color: white;
-      overflow-y: auto;
-    }
+        /* --- 全屏 Modal (開始/結束) --- */
+        .fullscreen-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 20, 0.95);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            overflow-y: auto;
+        }
 
-    .modal-content {
-      width: 100%;
-      max-width: 400px;
-      padding-bottom: 40px;
-      /* 預留滾動空間 */
-    }
+        .modal-content {
+            width: 100%;
+            max-width: 400px;
+            padding-bottom: 40px; /* 預留滾動空間 */
+        }
 
-    .game-title {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      background: linear-gradient(45deg, #ff5f6d, #ffc371);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        .game-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff5f6d, #ffc371);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .intro-box,
-    .analysis-box {
-      text-align: left;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 16px;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      color: #eee;
-    }
+        .intro-box, .analysis-box {
+            text-align: left;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #eee;
+        }
 
-    .intro-box p,
-    .analysis-box p {
-      margin-bottom: 8px;
-    }
+        .intro-box p, .analysis-box p {
+            margin-bottom: 8px;
+        }
 
-    .primary-btn {
-      background: var(--btn-gradient);
-      color: white;
-      border: none;
-      padding: 16px 0;
-      width: 100%;
-      border-radius: 14px;
-      font-size: 18px;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
-    }
+        .primary-btn {
+            background: var(--btn-gradient);
+            color: white;
+            border: none;
+            padding: 16px 0;
+            width: 100%;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
+        }
 
-    .primary-btn:active {
-      transform: scale(0.98);
-    }
+        .primary-btn:active { transform: scale(0.98); }
 
-    /* 顏色與動畫 */
-    .c-anger {
-      background: #ff3b30;
-    }
+        /* 顏色與動畫 */
+        .c-anger { background: #ff3b30; }
+        .c-greed { background: #ffcc00; }
+        .c-susp { background: #af52de; }
+        
+        @keyframes popIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-    .c-greed {
-      background: #ffcc00;
-    }
-
-    .c-susp {
-      background: #af52de;
-    }
-
-    @keyframes popIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .shake {
-      animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
-    }
-
-    @keyframes shake {
-
-      10%,
-      90% {
-        transform: translate3d(-1px, 0, 0);
-      }
-
-      20%,
-      80% {
-        transform: translate3d(2px, 0, 0);
-      }
-
-      30%,
-      50%,
-      70% {
-        transform: translate3d(-4px, 0, 0);
-      }
-
-      40%,
-      60% {
-        transform: translate3d(4px, 0, 0);
-      }
-    }
-  </style>
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+    </style>
 </head>
-
 <body>
 
-  <div class="overlay"></div>
+    <div class="overlay"></div>
 
-  <!-- 1. 介紹畫面 (Intro) -->
-  <div id="intro-screen" class="fullscreen-modal">
-    <div class="modal-content">
-      <h1 class="game-title">六國論</h1>
-      <h2 style="font-size: 16px; color: #bbb; margin-bottom: 20px;">燕王談判模擬器</h2>
+    <!-- 1. 介紹畫面 (Intro) -->
+    <div id="intro-screen" class="fullscreen-modal">
+        <div class="modal-content">
+            <h1 class="game-title">六國論</h1>
+            <h2 style="font-size: 16px; color: #bbb; margin-bottom: 20px;">燕王談判模擬器</h2>
+            
+            <div class="intro-box">
+                <p><strong>身份：</strong>燕王 (King of Yan)</p>
+                <p><strong>對手：</strong>秦王 (King of Qin) - 貪婪 (Greed)，暴躁 (Anger)，多疑 (Suspicion)</p>
+                <p><strong>目標：</strong>在十輪談判中保全國家 (protect your country)</p>
+                <p><strong>割地次數限制 (Land cession limit)：</strong>3/3（每割讓一次減1）</p>
+                <p style="font-size: 12px; color: #aaa; margin-top: 10px;">
+                    提示：數值過高會導致開戰 (declare war) 或吞并 (annex)。<br>
+                    只有極少數路線可聯合齊國 (ally with Qi)。
+                </p>
+            </div>
 
-      <div class="intro-box">
-        <p><strong>身份：</strong>燕王 (King of Yan)</p>
-        <p><strong>對手：</strong>秦王 (King of Qin) - 貪婪 (Greed)，暴躁 (Anger)，多疑 (Suspicion)</p>
-        <p><strong>目標：</strong>在十輪談判中保全國家 (protect your country)</p>
-        <p><strong>割地次數限制 (Land cession limit)：</strong>3/3（每割讓一次減1）</p>
-        <p style="font-size: 12px; color: #aaa; margin-top: 10px;">
-          提示：數值過高會導致開戰 (declare war) 或吞并 (annex)。<br>
-          只有極少數路線可聯合齊國 (ally with Qi)。
-        </p>
-      </div>
-
-      <button id="start-btn" class="primary-btn">開始談判 (Start)</button>
-    </div>
-  </div>
-
-  <!-- 2. 遊戲主介面 (Game) -->
-  <div id="game-screen" class="app-container" style="display: none;">
-
-    <!-- 頂部 HUD -->
-    <div class="hud-header">
-      <div class="round-info">
-        <span id="round-info-text">第 1 輪談判 (Round 1)</span>
-        <span id="land-badge-container" style="color: var(--primary-color)">割地 (Land): <span id="land-count-value">3</span>/3</span>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-box">
-          <span class="stat-label">憤怒 (Anger)</span>
-          <div class="progress-track">
-            <div id="anger-fill" class="progress-fill c-anger" style="width: 25%"></div>
-          </div>
+            <button id="start-btn" class="primary-btn">開始談判 (Start)</button>
         </div>
-        <div class="stat-box">
-          <span class="stat-label">貪婪 (Greed)</span>
-          <div class="progress-track">
-            <div id="greed-fill" class="progress-fill c-greed" style="width: 25%"></div>
-          </div>
+    </div>
+
+    <!-- 2. 遊戲主介面 (Game) -->
+    <div id="game-screen" class="app-container" style="display: none;">
+        
+        <!-- 頂部 HUD -->
+        <div class="hud-header">
+            <div class="round-info">
+                <span id="round-info-text">第 1 輪談判 (Round 1)</span>
+                <span id="land-badge-container" style="color: var(--primary-color)">割地 (Land): <span id="land-count-value">3</span>/3</span>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-label">憤怒 (Anger)</span>
+                    <div class="progress-track"><div id="anger-fill" class="progress-fill c-anger" style="width: 25%"></div></div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">貪婪 (Greed)</span>
+                    <div class="progress-track"><div id="greed-fill" class="progress-fill c-greed" style="width: 25%"></div></div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">戒心 (Suspicion)</span>
+                    <div class="progress-track"><div id="suspicion-fill" class="progress-fill c-susp" style="width: 25%"></div></div>
+                </div>
+            </div>
         </div>
-        <div class="stat-box">
-          <span class="stat-label">戒心 (Suspicion)</span>
-          <div class="progress-track">
-            <div id="suspicion-fill" class="progress-fill c-susp" style="width: 25%"></div>
-          </div>
+
+        <!-- 中間舞台 -->
+        <div class="stage-area">
+            <div id="avatar-wrapper" class="qin-avatar-wrapper">
+                <!-- 路徑修正: 移除 'images/'，直接使用 'qin_normal.png' -->
+                <img id="qin-image" 
+                     src="qin_normal.png" 
+                     class="qin-avatar" 
+                     onerror="this.src='https://placehold.co/300x300/8B0000/FFF?text=Qin+Error'">
+            </div>
+            
+            <div class="dialogue-bubble">
+                <span class="dialogue-name">秦王 (King of Qin)</span>
+                <span id="qin-dialogue" class="dialogue-text">載入中...</span>
+            </div>
         </div>
-      </div>
+
+        <!-- 底部選項 -->
+        <div class="controls-area">
+            <div id="choices-container" class="choices-stack">
+                <!-- JS 生成 -->
+            </div>
+        </div>
     </div>
 
-    <!-- 中間舞台 -->
-    <div class="stage-area">
-      <div id="avatar-wrapper" class="qin-avatar-wrapper">
-        <img id="qin-image" src="images/qin_normal.png" class="qin-avatar" onerror="this.src='https://placehold.co/300x300/8B0000/FFF?text=Qin'">
-      </div>
-
-      <div class="dialogue-bubble">
-        <span class="dialogue-name">秦王 (King of Qin)</span>
-        <span id="qin-dialogue" class="dialogue-text">載入中...</span>
-      </div>
+    <!-- 3. 結局畫面 (Ending) -->
+    <div id="ending-screen" class="fullscreen-modal" style="display: none;">
+        <div class="modal-content">
+            <h2 id="ending-title" style="font-size: 22px; font-weight: bold; margin-bottom: 15px; color: #ff5f6d;"></h2>
+            
+            <div id="ending-content" class="intro-box" style="background: rgba(255,255,255,0.15);"></div>
+            <div id="ending-analysis" class="analysis-box"></div>
+            
+            <button id="restart-btn" class="primary-btn">回到遊戲封面</button>
+        </div>
     </div>
 
-    <!-- 底部選項 -->
-    <div class="controls-area">
-      <div id="choices-container" class="choices-stack">
-        <!-- JS 生成 -->
-      </div>
-    </div>
-  </div>
+    <script>
+        // --- 圖片路徑配置 (修正為根目錄路徑) ---
+        const emotionImages = {
+            // 路徑修正: 移除 'images/' 前綴
+            "normal": "qin_normal.png",
+            "angry": "qin_angry.png",
+            "greedy": "qin_greedy.png",
+            "suspicious": "qin_suspicious.png"
+        };
 
-  <!-- 3. 結局畫面 (Ending) -->
-  <div id="ending-screen" class="fullscreen-modal" style="display: none;">
-    <div class="modal-content">
-      <h2 id="ending-title" style="font-size: 22px; font-weight: bold; margin-bottom: 15px; color: #ff5f6d;"></h2>
+        // --- 遊戲數據 (完整移植自您的原始文件) ---
+        const gameData = [
+            {
+                round: 1,
+                qin_opening: ["你們燕國 (Yan) 的誠意 (sincerity) 在哪裡？", "我的大軍 (army) 已經在邊境 (border)，你打算怎樣應對 (respond)？"],
+                choices: [
+                    { text: "我們願意獻上東部三城 (three eastern cities)，以換取和平 (peace)。", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "割地 (ceding land) 是個好的開始，看來你懂得如何表達誠意。", alliance: false, emotion: "greedy" },
+                    { text: "燕國百姓 (people) 不願再受戰火 (war)，請秦王體恤 (have compassion for) 百姓。", anger: -5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "百姓算什麼？你該先顧好你自己。", alliance: false, emotion: "normal" },
+                    { text: "如果你繼續進逼 (press forward)，燕國也會聯合 (unite with) 齊國 (Qi) 自保 (self-defense)。", anger: 10, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你還敢拉攏 (pull in) 齊國？小心你的腦袋！", alliance: true, emotion: "angry" },
+                    { text: "大王，國家大事不能太急 (hasty)，希望能再討論 (discuss again)。", anger: 5, greed: 0, suspicion: 5, land_give: 0, qin_reply: "你休想拖延 (stall) 時間，我沒那麼多耐心 (patience)。", alliance: false, emotion: "suspicious" }
+                ]
+            },
+            {
+                round: 2,
+                qin_opening: ["三座城太少了，燕王不夠誠意 (sincere)。", "你們要是再猶豫 (hesitate)，我隨時可以出兵 (send troops)。"],
+                choices: [
+                    { text: "再加西部兩郡 (two western districts)，希望秦王遵守承諾 (keep promise)。", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "還算聰明，你的誠意我感受到了。", alliance: false, emotion: "greedy" },
+                    { text: "燕國已經到極限了，請秦王原諒 (forgive)。", anger: 5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "你這是要跟我玩把戲 (play tricks)？", alliance: false, emotion: "angry" },
+                    { text: "秦國如果強取 (forcibly take)，其他諸侯國 (lords) 一定會一起討伐 (attack together)。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你以為我會怕那些小國？", alliance: true, emotion: "angry" },
+                    { text: "這件事很重要，請讓我再和大臣們商量 (discuss with ministers)。", anger: 5, greed: 0, suspicion: 5, land_give: 0, qin_reply: "你燕國是不是拖得起？", alliance: false, emotion: "suspicious" }
+                ]
+            },
+            {
+                round: 3,
+                qin_opening: ["你們燕國還有什麼能拿出來的？", "小國不懂順從 (submit)，難道要自取滅亡 (self-destruction)？"],
+                choices: [
+                    { text: "願意送上大量金銀財寶 (treasures) 和貢品 (tribute)。", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "錢財我不嫌多，你的誠意我看到了。", alliance: false, emotion: "greedy" },
+                    { text: "只要秦王撤軍 (withdraw troops)，一切好說。", anger: 10, greed: 0, suspicion: 10, land_give: 0, qin_reply: "你還敢談條件 (conditions)？", alliance: false, emotion: "angry" },
+                    { text: "聯合齊國，一起抵抗 (resist) 秦軍。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你真是不知死活！", alliance: true, emotion: "angry" },
+                    { text: "割讓北部一郡作為和平條約 (peace treaty) 的保證 (guarantee)。", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "又割地？看來你懂得如何表達誠意。", alliance: false, emotion: "greedy" }
+                ]
+            },
+            {
+                round: 4,
+                qin_opening: ["你還想保住多少地盤 (territory)？", "我可以給你最後一次機會。"],
+                choices: [
+                    { text: "願意割讓剩下的南部兩城。", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "你倒是識相 (sensible)，你的誠意我感受到了。", alliance: false, emotion: "greedy" },
+                    { text: "求秦王允許，讓燕國能夠生存下去 (survive)。", anger: -5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "小國的命運由我決定。", alliance: false, emotion: "normal" },
+                    { text: "與齊國已經結盟 (form alliance)，秦國如果逼迫 (force)，兩國會一起抵抗。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你們兩個加起來也不夠看。", alliance: true, emotion: "angry" },
+                    { text: "暫時無法答應，請再給一些時間。", anger: 5, greed: 0, suspicion: 5, land_give: 0, qin_reply: "你以為我會一直等嗎？", alliance: false, emotion: "suspicious" }
+                ]
+            },
+            {
+                round: 5,
+                qin_opening: ["割地不夠，還有什麼誠意？", "我今天心情不好，別惹我生氣。"],
+                choices: [
+                    { text: "送上燕國太子作為人質 (hostage)，表明我們的誠意 (sincerity)。", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "你兒子倒是有用，你的誠意我看到了。", alliance: false, emotion: "greedy" },
+                    { text: "再送大量金錢 (huge sum of money) 和稀有珍寶 (rare treasures)。", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "錢財誰會嫌多？你的誠意我感受到了。", alliance: false, emotion: "greedy" },
+                    { text: "你如果不停止，燕國將與齊國共同進退。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你們兩國還想反抗？", alliance: true, emotion: "angry" },
+                    { text: "請秦王給燕國百姓一條生路 (way out)。", anger: 0, greed: 0, suspicion: 10, land_give: 0, qin_reply: "這要看你有多識趣 (sensible)。", alliance: false, emotion: "normal" }
+                ]
+            },
+            {
+                round: 6,
+                qin_opening: ["我的耐心有限，你們燕國快做決定。", "太多廢話我聽不進去。"],
+                choices: [
+                    { text: "再割讓一小部分邊境土地 (border land)。", anger: -10, greed: 10, suspicion: -10, land_give: 1, qin_reply: "你們燕國還有多少可割？你的誠意我感受到了。", alliance: false, emotion: "greedy" },
+                    { text: "秦王軍隊強大，我國無力抵抗，只求原諒。", anger: -5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "你這麼怕，我倒是開心了些。", alliance: false, emotion: "normal" },
+                    { text: "燕國和齊國的聯合軍隊已在邊境準備好了。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你在威脅我？", alliance: true, emotion: "angry" },
+                    { text: "這種條件太苛刻 (harsh)，燕國難以接受。", anger: 10, greed: 0, suspicion: 10, land_give: 0, qin_reply: "你還敢拒絕？", alliance: false, emotion: "angry" }
+                ]
+            },
+            {
+                round: 7,
+                qin_opening: ["到現在還不答應？", "別以為拖延有用。"],
+                choices: [
+                    { text: "願意送上燕國兵器 (weapons)、戰馬 (horses)。", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "東西收下了，你的誠意我看到了。", alliance: false, emotion: "greedy" },
+                    { text: "我們希望能保有國號 (national title)，不被吞并 (annexed)。", anger: 5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "國號？你以為你還有選擇？", alliance: false, emotion: "angry" },
+                    { text: "燕國願與秦國結成婚姻聯盟 (marriage alliance)，永遠保持和平。", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "結親可以考慮，你的誠意我感受到了。", alliance: false, emotion: "normal" },
+                    { text: "我們已經與齊國達成軍事同盟 (military alliance)。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你們自尋死路！", alliance: true, emotion: "angry" }
+                ]
+            },
+            {
+                round: 8,
+                qin_opening: ["燕王，割地還有多少？", "不要再耍花樣了。"],
+                choices: [
+                    { text: "最後願意割讓一塊肥沃土地 (fertile land)，希望就此停止戰爭。", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "再多點誠意也許能留你一命，你的誠意我感受到了。", alliance: false, emotion: "greedy" },
+                    { text: "燕國已經沒有地可割了，請秦王手下留情。", anger: 5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "你這是在威脅我？", alliance: false, emotion: "angry" },
+                    { text: "我們願意與秦國分享貿易利益 (trade benefits)。", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "有錢大家賺，你的誠意我看到了。", alliance: false, emotion: "greedy" },
+                    { text: "燕國和齊國已經結成軍事同盟。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你還敢嘴硬？", alliance: true, emotion: "angry" }
+                ]
+            },
+            {
+                round: 9,
+                qin_opening: ["我已經等不下去了。", "你們燕國最好識趣一點。"],
+                choices: [
+                    { text: "願意割讓最後一城，保住燕國不被消滅。", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "只要你還有城，我就要。你的誠意我感受到了。", alliance: false, emotion: "greedy" },
+                    { text: "燕王願意向秦王稱臣 (pledge allegiance)，保護百姓平安。", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "稱臣容易，你的誠意我看到了。", alliance: false, emotion: "normal" },
+                    { text: "我們願意送上全部財寶，只求和平。", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "財寶有了，你的誠意我感受到了。", alliance: false, emotion: "greedy" },
+                    { text: "齊國軍隊已經進駐燕國和秦國的邊境。", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "你們自取滅亡！", alliance: true, emotion: "angry" }
+                ]
+            },
+            {
+                round: 10,
+                qin_opening: ["這是最後一次機會。", "你要是還不讓步，燕國就等著滅亡吧。"],
+                choices: [
+                    { text: "願意獻上燕國地圖、軍事情報 (military intelligence)，表明我們無心反抗。", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "我要的不是地圖，是你的國家。但你的誠意我看到了。", alliance: false, emotion: "greedy" },
+                    { text: "願意與秦王簽訂互不侵犯條約 (non-aggression pact)。", anger: 0, greed: 0, suspicion: -5, land_give: 0, qin_reply: "我信不過你的條約，但你的誠意我感受到了。", alliance: false, emotion: "suspicious" },
+                    { text: "燕國和齊國的聯盟已經成立，兩國共同抵抗秦軍。", anger: 20, greed: 0, suspicion: 30, land_give: 0, qin_reply: "你當我怕你們？", alliance: true, emotion: "angry" },
+                    { text: "即使亡國，燕王也不會再割地。", anger: 10, greed: 0, suspicion: 10, land_give: 0, qin_reply: "那你就等著滅亡吧！", alliance: false, emotion: "angry" }
+                ]
+            }
+        ];
 
-      <div id="ending-content" class="intro-box" style="background: rgba(255,255,255,0.15);"></div>
-      <div id="ending-analysis" class="analysis-box"></div>
+        // --- DOM 元素 ---
+        const els = {
+            intro: document.getElementById('intro-screen'),
+            game: document.getElementById('game-screen'),
+            ending: document.getElementById('ending-screen'),
+            qinImg: document.getElementById('qin-image'),
+            avatarWrapper: document.getElementById('avatar-wrapper'),
+            dialogue: document.getElementById('qin-dialogue'),
+            choices: document.getElementById('choices-container'),
+            round: document.getElementById('round-info-text'),
+            landCount: document.getElementById('land-count-value'),
+            bars: {
+                anger: document.getElementById('anger-fill'),
+                greed: document.getElementById('greed-fill'),
+                suspicion: document.getElementById('suspicion-fill')
+            },
+            endingTitle: document.getElementById('ending-title'),
+            endingContent: document.getElementById('ending-content'),
+            endingAnalysis: document.getElementById('ending-analysis')
+        };
 
-      <button id="restart-btn" class="primary-btn">回到遊戲封面</button>
-    </div>
-  </div>
+        // --- 遊戲狀態 ---
+        let gameState = {
+            currentRound: 0, anger: 25, greed: 25, suspicion: 25, landCount: 3, alliance_mentions: 0
+        };
 
-  <script>
-    // --- 圖片路徑配置 ---
-    const emotionImages = {
-      "normal": "images/qin_normal.png",
-      "angry": "images/qin_angry.png",
-      "greedy": "images/qin_greedy.png",
-      "suspicious": "images/qin_suspicion.png"
-    };
-    // --- 遊戲數據 (完整移植自您的原始文件) ---
-    const gameData = [{
-        round: 1,
-        qin_opening: ["你們燕國 (Yan) 的誠意 (sincerity) 在哪裡？", "我的大軍 (army) 已經在邊境 (border)，你打算怎樣應對 (respond)？"],
-        choices: [{
-            text: "我們願意獻上東部三城 (three eastern cities)，以換取和平 (peace)。",
-            anger: -10,
-            greed: 15,
-            suspicion: -10,
-            land_give: 1,
-            qin_reply: "割地 (ceding land) 是個好的開始，看來你懂得如何表達誠意。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "燕國百姓 (people) 不願再受戰火 (war)，請秦王體恤 (have compassion for) 百姓。",
-            anger: -5,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "百姓算什麼？你該先顧好你自己。",
-            alliance: false,
-            emotion: "normal"
-          },
-          {
-            text: "如果你繼續進逼 (press forward)，燕國也會聯合 (unite with) 齊國 (Qi) 自保 (self-defense)。",
-            anger: 10,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你還敢拉攏 (pull in) 齊國？小心你的腦袋！",
-            alliance: true,
-            emotion: "angry"
-          },
-          {
-            text: "大王，國家大事不能太急 (hasty)，希望能再討論 (discuss again)。",
-            anger: 5,
-            greed: 0,
-            suspicion: 5,
-            land_give: 0,
-            qin_reply: "你休想拖延 (stall) 時間，我沒那麼多耐心 (patience)。",
-            alliance: false,
-            emotion: "suspicious"
-          }
-        ]
-      },
-      {
-        round: 2,
-        qin_opening: ["三座城太少了，燕王不夠誠意 (sincere)。", "你們要是再猶豫 (hesitate)，我隨時可以出兵 (send troops)。"],
-        choices: [{
-            text: "再加西部兩郡 (two western districts)，希望秦王遵守承諾 (keep promise)。",
-            anger: -10,
-            greed: 15,
-            suspicion: -10,
-            land_give: 1,
-            qin_reply: "還算聰明，你的誠意我感受到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "燕國已經到極限了，請秦王原諒 (forgive)。",
-            anger: 5,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "你這是要跟我玩把戲 (play tricks)？",
-            alliance: false,
-            emotion: "angry"
-          },
-          {
-            text: "秦國如果強取 (forcibly take)，其他諸侯國 (lords) 一定會一起討伐 (attack together)。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你以為我會怕那些小國？",
-            alliance: true,
-            emotion: "angry"
-          },
-          {
-            text: "這件事很重要，請讓我再和大臣們商量 (discuss with ministers)。",
-            anger: 5,
-            greed: 0,
-            suspicion: 5,
-            land_give: 0,
-            qin_reply: "你燕國是不是拖得起？",
-            alliance: false,
-            emotion: "suspicious"
-          }
-        ]
-      },
-      {
-        round: 3,
-        qin_opening: ["你們燕國還有什麼能拿出來的？", "小國不懂順從 (submit)，難道要自取滅亡 (self-destruction)？"],
-        choices: [{
-            text: "願意送上大量金銀財寶 (treasures) 和貢品 (tribute)。",
-            anger: -5,
-            greed: 10,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "錢財我不嫌多，你的誠意我看到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "只要秦王撤軍 (withdraw troops)，一切好說。",
-            anger: 10,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "你還敢談條件 (conditions)？",
-            alliance: false,
-            emotion: "angry"
-          },
-          {
-            text: "聯合齊國，一起抵抗 (resist) 秦軍。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你真是不知死活！",
-            alliance: true,
-            emotion: "angry"
-          },
-          {
-            text: "割讓北部一郡作為和平條約 (peace treaty) 的保證 (guarantee)。",
-            anger: -10,
-            greed: 15,
-            suspicion: -10,
-            land_give: 1,
-            qin_reply: "又割地？看來你懂得如何表達誠意。",
-            alliance: false,
-            emotion: "greedy"
-          }
-        ]
-      },
-      {
-        round: 4,
-        qin_opening: ["你還想保住多少地盤 (territory)？", "我可以給你最後一次機會。"],
-        choices: [{
-            text: "願意割讓剩下的南部兩城。",
-            anger: -10,
-            greed: 15,
-            suspicion: -10,
-            land_give: 1,
-            qin_reply: "你倒是識相 (sensible)，你的誠意我感受到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "求秦王允許，讓燕國能夠生存下去 (survive)。",
-            anger: -5,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "小國的命運由我決定。",
-            alliance: false,
-            emotion: "normal"
-          },
-          {
-            text: "與齊國已經結盟 (form alliance)，秦國如果逼迫 (force)，兩國會一起抵抗。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你們兩個加起來也不夠看。",
-            alliance: true,
-            emotion: "angry"
-          },
-          {
-            text: "暫時無法答應，請再給一些時間。",
-            anger: 5,
-            greed: 0,
-            suspicion: 5,
-            land_give: 0,
-            qin_reply: "你以為我會一直等嗎？",
-            alliance: false,
-            emotion: "suspicious"
-          }
-        ]
-      },
-      {
-        round: 5,
-        qin_opening: ["割地不夠，還有什麼誠意？", "我今天心情不好，別惹我生氣。"],
-        choices: [{
-            text: "送上燕國太子作為人質 (hostage)，表明我們的誠意 (sincerity)。",
-            anger: -5,
-            greed: 10,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "你兒子倒是有用，你的誠意我看到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "再送大量金錢 (huge sum of money) 和稀有珍寶 (rare treasures)。",
-            anger: -5,
-            greed: 10,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "錢財誰會嫌多？你的誠意我感受到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "你如果不停止，燕國將與齊國共同進退。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你們兩國還想反抗？",
-            alliance: true,
-            emotion: "angry"
-          },
-          {
-            text: "請秦王給燕國百姓一條生路 (way out)。",
-            anger: 0,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "這要看你有多識趣 (sensible)。",
-            alliance: false,
-            emotion: "normal"
-          }
-        ]
-      },
-      {
-        round: 6,
-        qin_opening: ["我的耐心有限，你們燕國快做決定。", "太多廢話我聽不進去。"],
-        choices: [{
-            text: "再割讓一小部分邊境土地 (border land)。",
-            anger: -10,
-            greed: 10,
-            suspicion: -10,
-            land_give: 1,
-            qin_reply: "你們燕國還有多少可割？你的誠意我感受到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "秦王軍隊強大，我國無力抵抗，只求原諒。",
-            anger: -5,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "你這麼怕，我倒是開心了些。",
-            alliance: false,
-            emotion: "normal"
-          },
-          {
-            text: "燕國和齊國的聯合軍隊已在邊境準備好了。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你在威脅我？",
-            alliance: true,
-            emotion: "angry"
-          },
-          {
-            text: "這種條件太苛刻 (harsh)，燕國難以接受。",
-            anger: 10,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "你還敢拒絕？",
-            alliance: false,
-            emotion: "angry"
-          }
-        ]
-      },
-      {
-        round: 7,
-        qin_opening: ["到現在還不答應？", "別以為拖延有用。"],
-        choices: [{
-            text: "願意送上燕國兵器 (weapons)、戰馬 (horses)。",
-            anger: -5,
-            greed: 5,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "東西收下了，你的誠意我看到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "我們希望能保有國號 (national title)，不被吞并 (annexed)。",
-            anger: 5,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "國號？你以為你還有選擇？",
-            alliance: false,
-            emotion: "angry"
-          },
-          {
-            text: "燕國願與秦國結成婚姻聯盟 (marriage alliance)，永遠保持和平。",
-            anger: -5,
-            greed: 5,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "結親可以考慮，你的誠意我感受到了。",
-            alliance: false,
-            emotion: "normal"
-          },
-          {
-            text: "我們已經與齊國達成軍事同盟 (military alliance)。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你們自尋死路！",
-            alliance: true,
-            emotion: "angry"
-          }
-        ]
-      },
-      {
-        round: 8,
-        qin_opening: ["燕王，割地還有多少？", "不要再耍花樣了。"],
-        choices: [{
-            text: "最後願意割讓一塊肥沃土地 (fertile land)，希望就此停止戰爭。",
-            anger: -10,
-            greed: 15,
-            suspicion: -10,
-            land_give: 1,
-            qin_reply: "再多點誠意也許能留你一命，你的誠意我感受到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "燕國已經沒有地可割了，請秦王手下留情。",
-            anger: 5,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "你這是在威脅我？",
-            alliance: false,
-            emotion: "angry"
-          },
-          {
-            text: "我們願意與秦國分享貿易利益 (trade benefits)。",
-            anger: -5,
-            greed: 5,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "有錢大家賺，你的誠意我看到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "燕國和齊國已經結成軍事同盟。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你還敢嘴硬？",
-            alliance: true,
-            emotion: "angry"
-          }
-        ]
-      },
-      {
-        round: 9,
-        qin_opening: ["我已經等不下去了。", "你們燕國最好識趣一點。"],
-        choices: [{
-            text: "願意割讓最後一城，保住燕國不被消滅。",
-            anger: -10,
-            greed: 15,
-            suspicion: -10,
-            land_give: 1,
-            qin_reply: "只要你還有城，我就要。你的誠意我感受到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "燕王願意向秦王稱臣 (pledge allegiance)，保護百姓平安。",
-            anger: -5,
-            greed: 5,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "稱臣容易，你的誠意我看到了。",
-            alliance: false,
-            emotion: "normal"
-          },
-          {
-            text: "我們願意送上全部財寶，只求和平。",
-            anger: -5,
-            greed: 10,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "財寶有了，你的誠意我感受到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "齊國軍隊已經進駐燕國和秦國的邊境。",
-            anger: 15,
-            greed: 0,
-            suspicion: 20,
-            land_give: 0,
-            qin_reply: "你們自取滅亡！",
-            alliance: true,
-            emotion: "angry"
-          }
-        ]
-      },
-      {
-        round: 10,
-        qin_opening: ["這是最後一次機會。", "你要是還不讓步，燕國就等著滅亡吧。"],
-        choices: [{
-            text: "願意獻上燕國地圖、軍事情報 (military intelligence)，表明我們無心反抗。",
-            anger: -5,
-            greed: 5,
-            suspicion: -10,
-            land_give: 0,
-            qin_reply: "我要的不是地圖，是你的國家。但你的誠意我看到了。",
-            alliance: false,
-            emotion: "greedy"
-          },
-          {
-            text: "願意與秦王簽訂互不侵犯條約 (non-aggression pact)。",
-            anger: 0,
-            greed: 0,
-            suspicion: -5,
-            land_give: 0,
-            qin_reply: "我信不過你的條約，但你的誠意我感受到了。",
-            alliance: false,
-            emotion: "suspicious"
-          },
-          {
-            text: "燕國和齊國的聯盟已經成立，兩國共同抵抗秦軍。",
-            anger: 20,
-            greed: 0,
-            suspicion: 30,
-            land_give: 0,
-            qin_reply: "你當我怕你們？",
-            alliance: true,
-            emotion: "angry"
-          },
-          {
-            text: "即使亡國，燕王也不會再割地。",
-            anger: 10,
-            greed: 0,
-            suspicion: 10,
-            land_give: 0,
-            qin_reply: "那你就等著滅亡吧！",
-            alliance: false,
-            emotion: "angry"
-          }
-        ]
-      }
-    ];
-    // --- 遊戲狀態 ---
-    let gameState = {
-      currentRound: 0,
-      anger: 25,
-      greed: 25,
-      suspicion: 25,
-      landCount: 3,
-      alliance_mentions: 0
-    };
-    // --- DOM 元素 ---
-    const els = {
-      intro: document.getElementById('intro-screen'),
-      game: document.getElementById('game-screen'),
-      ending: document.getElementById('ending-screen'),
-      qinImg: document.getElementById('qin-image'),
-      avatarWrapper: document.getElementById('avatar-wrapper'),
-      dialogue: document.getElementById('qin-dialogue'),
-      choices: document.getElementById('choices-container'),
-      round: document.getElementById('round-info-text'),
-      landCount: document.getElementById('land-count-value'),
-      bars: {
-        anger: document.getElementById('anger-fill'),
-        greed: document.getElementById('greed-fill'),
-        suspicion: document.getElementById('suspicion-fill')
-      },
-      endingTitle: document.getElementById('ending-title'),
-      endingContent: document.getElementById('ending-content'),
-      endingAnalysis: document.getElementById('ending-analysis')
-    };
-    // --- 事件監聽 ---
-    document.getElementById('start-btn').addEventListener('click', startGame);
-    document.getElementById('restart-btn').addEventListener('click', () => {
-      els.ending.style.display = 'none';
-      els.intro.style.display = 'flex';
-    });
-    // --- 核心邏輯 ---
-    function startGame() {
-      gameState = {
-        currentRound: 0,
-        anger: 25,
-        greed: 25,
-        suspicion: 25,
-        landCount: 3,
-        alliance_mentions: 0
-      };
-      els.intro.style.display = 'none';
-      els.game.style.display = 'flex';
-      nextRound();
-    }
+        // --- 事件監聽 ---
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            els.ending.style.display = 'none';
+            els.intro.style.display = 'flex';
+        });
 
-    function nextRound() {
-      if (gameState.currentRound >= 10) {
-        checkEnding();
-        return;
-      }
-      gameState.currentRound++;
-      const data = gameData[gameState.currentRound - 1];
-      // 更新 UI
-      els.round.textContent = `第 ${gameState.currentRound} 輪談判 (Round ${gameState.currentRound})`;
-      // 隨機選擇開場白
-      const openingText = Array.isArray(data.qin_opening) ?
-        data.qin_opening[Math.floor(Math.random() * data.qin_opening.length)] :
-        data.qin_opening;
-      typeWriter(openingText);
-      updateEmotionBasedOnStats();
-      updateStatsUI();
-      renderChoices(data.choices);
-    }
-
-    function renderChoices(choices) {
-      els.choices.innerHTML = '';
-      choices.forEach(choice => {
-        const btn = document.createElement('button');
-        btn.className = 'choice-btn';
-        let text = choice.text;
-        // 如果消耗土地，加上視覺標籤
-        if (choice.land_give > 0) {
-          text = `<span class="land-badge">割地</span> ${text}`;
+        // --- 核心邏輯 ---
+        function startGame() {
+            gameState = { currentRound: 0, anger: 25, greed: 25, suspicion: 25, landCount: 3, alliance_mentions: 0 };
+            els.intro.style.display = 'none';
+            els.game.style.display = 'flex';
+            nextRound();
         }
-        btn.innerHTML = text;
-        // 檢查是否還能割地
-        if (choice.land_give > 0 && gameState.landCount <= 0) {
-          btn.disabled = true;
-          btn.innerHTML += " <br><small>(無地可割 No land left)</small>";
+
+        function nextRound() {
+            if (gameState.currentRound >= 10) {
+                checkEnding();
+                return;
+            }
+
+            gameState.currentRound++;
+            const data = gameData[gameState.currentRound - 1];
+            
+            // 更新 UI
+            els.round.textContent = `第 ${gameState.currentRound} 輪談判 (Round ${gameState.currentRound})`;
+            
+            // 隨機選擇開場白
+            const openingText = Array.isArray(data.qin_opening) 
+                ? data.qin_opening[Math.floor(Math.random() * data.qin_opening.length)]
+                : data.qin_opening;
+            
+            typeWriter(openingText);
+
+            updateEmotionBasedOnStats();
+            updateStatsUI();
+            renderChoices(data.choices);
         }
-        btn.onclick = () => makeChoice(choice);
-        els.choices.appendChild(btn);
-      });
-    }
 
-    function makeChoice(choice) {
-      // 鎖定所有按鈕
-      const btns = els.choices.querySelectorAll('button');
-      btns.forEach(b => b.disabled = true);
-      // 更新數值
-      gameState.anger = clamp(gameState.anger + choice.anger);
-      gameState.greed = clamp(gameState.greed + choice.greed);
-      gameState.suspicion = clamp(gameState.suspicion + choice.suspicion);
-      if (choice.land_give) gameState.landCount -= choice.land_give;
-      if (choice.alliance) gameState.alliance_mentions++;
-      updateStatsUI();
-      // 震動效果 (激怒秦王時)
-      if (choice.anger > 5 || choice.emotion === 'angry') {
-        els.avatarWrapper.classList.add('shake');
-        setTimeout(() => els.avatarWrapper.classList.remove('shake'), 400);
-      }
-      // 顯示秦王回應
-      typeWriter(choice.qin_reply);
-      setQinEmotion(choice.emotion || 'normal');
-      // 檢查失敗或下一輪
-      if (gameState.anger >= 100 || gameState.greed >= 100 || gameState.suspicion >= 100) {
-        setTimeout(showEnding, 2000);
-      } else {
-        setTimeout(nextRound, 2000);
-      }
-    }
+        function renderChoices(choices) {
+            els.choices.innerHTML = '';
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                
+                let text = choice.text;
+                // 如果消耗土地，加上視覺標籤
+                if (choice.land_give > 0) {
+                    text = `<span class="land-badge">割地</span> ${text}`;
+                }
+                btn.innerHTML = text;
+                
+                // 檢查是否還能割地
+                if (choice.land_give > 0 && gameState.landCount <= 0) {
+                    btn.disabled = true;
+                    btn.innerHTML += " <br><small>(無地可割 No land left)</small>";
+                }
+                
+                btn.onclick = () => makeChoice(choice);
+                els.choices.appendChild(btn);
+            });
+        }
 
-    function updateStatsUI() {
-      els.bars.anger.style.width = gameState.anger + '%';
-      els.bars.greed.style.width = gameState.greed + '%';
-      els.bars.suspicion.style.width = gameState.suspicion + '%';
-      els.landCount.textContent = gameState.landCount;
-      els.landCount.style.color = gameState.landCount === 0 ? '#ff3b30' : 'inherit';
-    }
+        function makeChoice(choice) {
+            // 鎖定所有按鈕
+            const btns = els.choices.querySelectorAll('button');
+            btns.forEach(b => b.disabled = true);
 
-    function updateEmotionBasedOnStats() {
-      // 根據當前最高數值設定默認表情
-      if (gameState.anger > 70) setQinEmotion('angry');
-      else if (gameState.greed > 70) setQinEmotion('greedy');
-      else if (gameState.suspicion > 70) setQinEmotion('suspicious');
-      else setQinEmotion('normal');
-    }
+            // 更新數值
+            gameState.anger = clamp(gameState.anger + choice.anger);
+            gameState.greed = clamp(gameState.greed + choice.greed);
+            gameState.suspicion = clamp(gameState.suspicion + choice.suspicion);
+            if (choice.land_give) gameState.landCount -= choice.land_give;
+            if (choice.alliance) gameState.alliance_mentions++;
 
-    function setQinEmotion(type) {
-      els.qinImg.src = emotionImages[type] || emotionImages['normal'];
-    }
+            updateStatsUI();
 
-    function typeWriter(text) {
-      // 簡單的淡入動畫
-      els.dialogue.textContent = text;
-      els.dialogue.parentElement.style.animation = 'none';
-      els.dialogue.parentElement.offsetHeight;
-      els.dialogue.parentElement.style.animation = 'popIn 0.3s ease-out';
-    }
+            // 震動效果 (激怒秦王時)
+            if (choice.anger > 5 || choice.emotion === 'angry') {
+                els.avatarWrapper.classList.add('shake');
+                setTimeout(() => els.avatarWrapper.classList.remove('shake'), 400);
+            }
 
-    function clamp(val) {
-      return Math.max(0, Math.min(100, val));
-    }
+            // 顯示秦王回應
+            typeWriter(choice.qin_reply);
+            setQinEmotion(choice.emotion || 'normal');
 
-    function checkEnding() {
-      showEnding();
-    }
-    // --- 結局邏輯 (完整移植) ---
-    function showEnding() {
-      els.game.style.display = 'none';
-      els.ending.style.display = 'flex';
-      let endingTitleText, endingContentText, endingAnalysisText;
-      // 結局判斷邏輯
-      if (gameState.alliance_mentions >= 2 && gameState.landCount >= 2 &&
-        gameState.anger < 80 && gameState.suspicion < 80) {
-        // 結局 C
-        endingTitleText = '🎯 結局 C：燕齊聯盟勉強自保 (Alliance with Qi Saves Yan)';
-        endingContentText = `
+            // 檢查失敗或下一輪
+            if (gameState.anger >= 100 || gameState.greed >= 100 || gameState.suspicion >= 100) {
+                setTimeout(showEnding, 2000);
+            } else {
+                setTimeout(nextRound, 2000);
+            }
+        }
+
+        function updateStatsUI() {
+            els.bars.anger.style.width = gameState.anger + '%';
+            els.bars.greed.style.width = gameState.greed + '%';
+            els.bars.suspicion.style.width = gameState.suspicion + '%';
+            els.landCount.textContent = gameState.landCount;
+            els.landCount.style.color = gameState.landCount === 0 ? '#ff3b30' : 'inherit';
+        }
+
+        function updateEmotionBasedOnStats() {
+            // 根據當前最高數值設定默認表情
+            if (gameState.anger > 70) setQinEmotion('angry');
+            else if (gameState.greed > 70) setQinEmotion('greedy');
+            else if (gameState.suspicion > 70) setQinEmotion('suspicious');
+            else setQinEmotion('normal');
+        }
+
+        function setQinEmotion(type) {
+            // 路徑修正: 使用根目錄路徑
+            els.qinImg.src = emotionImages[type] || emotionImages['normal'];
+        }
+
+        function typeWriter(text) {
+            // 簡單的淡入動畫
+            els.dialogue.textContent = text;
+            els.dialogue.parentElement.style.animation = 'none';
+            els.dialogue.parentElement.offsetHeight; 
+            els.dialogue.parentElement.style.animation = 'popIn 0.3s ease-out';
+        }
+
+        function clamp(val) { return Math.max(0, Math.min(100, val)); }
+
+        function checkEnding() { showEnding(); }
+
+        // --- 結局邏輯 (完整移植) ---
+        function showEnding() {
+            els.game.style.display = 'none';
+            els.ending.style.display = 'flex';
+            
+            let endingTitleText, endingContentText, endingAnalysisText;
+            
+            // 結局判斷邏輯
+            if (gameState.alliance_mentions >= 2 && gameState.landCount >= 2 && 
+                gameState.anger < 80 && gameState.suspicion < 80) {
+                // 結局 C
+                endingTitleText = '🎯 結局 C：燕齊聯盟勉強自保 (Alliance with Qi Saves Yan)';
+                endingContentText = `
                     <p>你冒險聯合齊國 (ally with Qi)，成功拖住秦軍。燕國雖然損失很大，但至少保住了最後一線生機 (last hope)。</p>
                     <p>這種結局非常罕見，但也證明聯合抗秦 (unite against Qin) 雖然困難，但不是完全不可能。</p>
                     <p style="margin-top:10px; font-size:12px; color:#ccc;"><strong>最終數值：</strong> 憤怒 ${gameState.anger} | 貪婪 ${gameState.greed} | 戒心 ${gameState.suspicion}</p>
                     <p style="font-size:12px; color:#ccc;"><strong>剩餘割地：</strong> ${gameState.landCount} 次 | <strong>聯合提及：</strong> ${gameState.alliance_mentions} 次</p>
                 `;
-        endingAnalysisText = `
+                endingAnalysisText = `
                     <h3 style="color:#ff5f6d; margin-bottom:5px;">📚 《六國論》啟示</h3>
                     <p>恭喜你達成了最佳結局！你的策略完美體現了《六國論》的核心思想：</p>
                     <p>✅ <strong>合縱抗秦 (Unite against Qin)：</strong>你成功聯合齊國，形成抗秦聯盟。</p>
@@ -1074,15 +689,15 @@
                     <p>✅ <strong>外交智慧 (Diplomatic wisdom)：</strong>你在談判中保持了適當的強硬與妥協。</p>
                     <p style="font-style:italic; color:#ffd700; margin-top:5px;">「以賂秦之地封天下之謀臣，以事秦之心禮天下之奇才，併力西向，則吾恐秦人食之不得下咽也。」——蘇洵</p>
                 `;
-      } else if (gameState.anger >= 80 || gameState.suspicion >= 80) {
-        // 結局 A (激怒)
-        endingTitleText = '⚔️ 結局 A：秦國滅燕 (Qin Destroys Yan)';
-        endingContentText = `
+            } else if (gameState.anger >= 80 || gameState.suspicion >= 80) {
+                // 結局 A (激怒)
+                endingTitleText = '⚔️ 結局 A：秦國滅燕 (Qin Destroys Yan)';
+                endingContentText = `
                     <p>秦王的憤怒值或戒心值過高，再也無法容忍燕國的態度。</p>
                     <p>秦國大軍壓境，燕國軍隊根本無力抵抗。幾個月內，燕國都城被攻破，燕王被俘，人民流離失所。</p>
                     <p style="margin-top:10px; font-size:12px; color:#ccc;"><strong>最終數值：</strong> 憤怒 ${gameState.anger} | 貪婪 ${gameState.greed} | 戒心 ${gameState.suspicion}</p>
                 `;
-        endingAnalysisText = `
+                endingAnalysisText = `
                     <h3 style="color:#ff5f6d; margin-bottom:5px;">📚 《六國論》啟示</h3>
                     <p>你的結局印證了蘇洵的觀點：</p>
                     <p>❌ <strong>過度抗拒導致滅亡：</strong>雖然不願割地是對的，但沒有配合適當的外交策略。</p>
@@ -1090,15 +705,15 @@
                     <p>❌ <strong>激怒強權：</strong>在實力懸殊的情況下，過度強硬會招致滅頂之災。</p>
                     <p style="font-style:italic; color:#ffd700; margin-top:5px;">「以地事秦，猶抱薪救火，薪不盡，火不滅。」——蘇洵</p>
                 `;
-      } else if (gameState.greed >= 80 || gameState.landCount === 0) {
-        // 結局 B (吞併)
-        endingTitleText = '🏴 結局 B：秦國吞併燕 (Qin Annexes Yan)';
-        endingContentText = `
+            } else if (gameState.greed >= 80 || gameState.landCount === 0) {
+                // 結局 B (吞併)
+                endingTitleText = '🏴 結局 B：秦國吞併燕 (Qin Annexes Yan)';
+                endingContentText = `
                     <p>燕國為了求和，不斷割地賄賂 (bribe with land) 秦國。然而，秦王的貪婪永無止境。</p>
                     <p>最終，燕國領土所剩無幾，國力衰弱到無法自保。秦國不費一兵一卒，就將燕國完全吞併。</p>
                     <p style="margin-top:10px; font-size:12px; color:#ccc;"><strong>最終數值：</strong> 憤怒 ${gameState.anger} | 貪婪 ${gameState.greed} | 戒心 ${gameState.suspicion}</p>
                 `;
-        endingAnalysisText = `
+                endingAnalysisText = `
                     <h3 style="color:#ff5f6d; margin-bottom:5px;">📚 《六國論》啟示</h3>
                     <p>這正是《六國論》的核心教訓！你的結局完美詮釋了蘇洵的觀點：</p>
                     <p>❌ <strong>以地事秦：</strong>你選擇割地求和，但這只是飲鴆止渴。</p>
@@ -1106,27 +721,27 @@
                     <p>❌ <strong>貪婪無止境：</strong>秦王的野心永遠不會被滿足，只會越來越大。</p>
                     <p style="font-style:italic; color:#ffd700; margin-top:5px;">「賂秦而力虧，破滅之道也。」——蘇洵</p>
                 `;
-      } else {
-        // 默認失敗結局
-        endingTitleText = '⚔️ 結局 A：秦國滅燕 (Qin Destroys Yan)';
-        endingContentText = `
+            } else {
+                // 默認失敗結局
+                endingTitleText = '⚔️ 結局 A：秦國滅燕 (Qin Destroys Yan)';
+                endingContentText = `
                     <p>經過十輪艱難的談判，燕國最終還是無法逃脫秦國的魔掌。</p>
                     <p>秦國找到機會，大軍壓境。燕國雖然奮力抵抗，但寡不敵眾，最終滅亡。</p>
                     <p style="margin-top:10px; font-size:12px; color:#ccc;"><strong>最終數值：</strong> 憤怒 ${gameState.anger} | 貪婪 ${gameState.greed} | 戒心 ${gameState.suspicion}</p>
                 `;
-        endingAnalysisText = `
+                endingAnalysisText = `
                     <h3 style="color:#ff5f6d; margin-bottom:5px;">📚 《六國論》啟示</h3>
                     <p>你的結局反映了戰國時代的殘酷現實：</p>
                     <p>⚠️ <strong>單打獨鬥注定失敗：</strong>沒有與其他國家聯盟，燕國孤立無援。</p>
                     <p>⚠️ <strong>策略不當：</strong>雖然努力周旋，但沒有找到真正的出路。</p>
                     <p style="font-style:italic; color:#ffd700; margin-top:5px;">「六國破滅，非兵不利、戰不善，弊在賂秦。」——蘇洵</p>
                 `;
-      }
-      els.endingTitle.textContent = endingTitleText;
-      els.endingContent.innerHTML = endingContentText;
-      els.endingAnalysis.innerHTML = endingAnalysisText;
-    }
-  </script>
+            }
+            
+            els.endingTitle.textContent = endingTitleText;
+            els.endingContent.innerHTML = endingContentText;
+            els.endingAnalysis.innerHTML = endingAnalysisText;
+        }
+    </script>
 </body>
-
 </html>
