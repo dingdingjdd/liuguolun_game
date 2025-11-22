@@ -1,0 +1,761 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'PingFang SC'; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 12.0px 'PingFang SC'; font-kerning: none}
+    span.s3 {font: 12.0px 'Apple Color Emoji'; font-kerning: none}
+    span.s4 {font: 12.0px Helvetica; font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="zh-Hant"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- iPhone </span><span class="s2">專屬優化：禁止縮放，適配瀏海屏</span><span class="s1"> --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;</span><span class="s2">《六國論》燕王談判模擬器</span><span class="s1">&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* --- iOS </span><span class="s2">視覺風格設定</span><span class="s1"> --- */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>:root {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--primary-color: #8B0000;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--accent-color: #d32f2f;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--text-dark: #1c1c1e;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--glass-bg: rgba(255, 255, 255, 0.92);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>--btn-gradient: linear-gradient(135deg, #8B0000, #b71c1c);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>* {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>-webkit-tap-highlight-color: transparent;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Microsoft JhengHei", sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: url('images/bg_main.jpg') no-repeat center center fixed;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-size: cover;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100dvh;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100vw;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow: hidden;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: var(--text-dark);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* </span><span class="s2">背景遮罩</span><span class="s1"> */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.overlay {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>right: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>bottom: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(0, 0, 0, 0.3);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(3px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>z-index: -1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* --- App </span><span class="s2">主容器</span><span class="s1"> --- */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.app-container {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>max-width: 600px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin: 0 auto;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-top: env(safe-area-inset-top);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-bottom: env(safe-area-inset-bottom);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* --- </span><span class="s2">頂部儀表板</span><span class="s1"> (HUD) --- */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.hud-header {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.95);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>-webkit-backdrop-filter: blur(10px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 10px 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-bottom-left-radius: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-bottom-right-radius: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 15px rgba(0,0,0,0.15);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>z-index: 10;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-shrink: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.round-info {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: space-between;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 13px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 700;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #333;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.stats-grid {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: grid;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>grid-template-columns: 1fr 1fr 1fr;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.stat-box {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.stat-label {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #666;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 3px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 600;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.progress-track {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #e5e5ea;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 3px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow: hidden;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.progress-fill {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* --- </span><span class="s2">中間舞台區</span><span class="s1"> --- */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.stage-area {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex: 1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow-y: auto;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.qin-avatar-wrapper {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 150px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 150px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 50%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 4px solid var(--primary-color);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow: hidden;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #333;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 8px 20px rgba(0,0,0,0.4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-shrink: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: transform 0.3s;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.qin-avatar {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>object-fit: cover;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.dialogue-bubble {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: var(--glass-bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>-webkit-backdrop-filter: blur(10px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 18px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-top-left-radius: 4px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 15px rgba(0,0,0,0.1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 90%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>animation: popIn 0.3s ease-out;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.dialogue-name {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 800;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: var(--primary-color);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 4px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: block;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.dialogue-text {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>line-height: 1.5;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #000;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 500;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* --- </span><span class="s2">底部操作區</span><span class="s1"> --- */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.controls-area {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-shrink: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-bottom: calc(15px + env(safe-area-inset-bottom));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.choices-stack {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gap: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.choice-btn {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.95);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 14px 16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: left;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #000;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 8px rgba(0,0,0,0.2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: transform 0.1s, background 0.2s;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>line-height: 1.4;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.choice-btn:active {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: scale(0.98);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #f2f2f7;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.choice-btn:disabled {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>opacity: 0.6;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #e5e5ea;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #8e8e93;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* </span><span class="s2">割地標籤</span><span class="s1"> */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.land-badge {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: var(--primary-color);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 2px 6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 4px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>vertical-align: middle;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-right: 5px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: inline-block;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* --- </span><span class="s2">全屏</span><span class="s1"> Modal (</span><span class="s2">開始</span><span class="s1">/</span><span class="s2">結束</span><span class="s1">) --- */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.fullscreen-modal {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: fixed;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(15, 15, 20, 0.95);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>z-index: 100;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>flex-direction: column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>justify-content: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>align-items: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 30px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>overflow-y: auto;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.modal-content {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>max-width: 400px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-bottom: 40px; /* </span><span class="s2">預留滾動空間</span><span class="s1"> */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.game-title {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 28px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 800;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, #ff5f6d, #ffc371);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>-webkit-background-clip: text;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>-webkit-text-fill-color: transparent;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.intro-box, .analysis-box {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: left;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: rgba(255,255,255,0.1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>line-height: 1.6;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #eee;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.intro-box p, .analysis-box p {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.primary-btn {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: var(--btn-gradient);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 16px 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 18px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 600;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.primary-btn:active { transform: scale(0.98); }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* </span><span class="s2">顏色與動畫</span><span class="s1"> */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.c-anger { background: #ff3b30; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.c-greed { background: #ffcc00; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.c-susp { background: #af52de; }</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes popIn {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>from { opacity: 0; transform: translateY(10px) scale(0.95); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>to { opacity: 1; transform: translateY(0) scale(1); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes shake {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>10%, 90% { transform: translate3d(-1px, 0, 0); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>20%, 80% { transform: translate3d(2px, 0, 0); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>40%, 60% { transform: translate3d(4px, 0, 0); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="overlay"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 1. </span><span class="s2">介紹畫面</span><span class="s1"> (Intro) --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="intro-screen" class="fullscreen-modal"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="modal-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h1 class="game-title"&gt;</span><span class="s2">六國論</span><span class="s1">&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h2 style="font-size: 16px; color: #bbb; margin-bottom: 20px;"&gt;</span><span class="s2">燕王談判模擬器</span><span class="s1">&lt;/h2&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="intro-box"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;</span><span class="s2">身份：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">燕王</span><span class="s1"> (King of Yan)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;</span><span class="s2">對手：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">秦王</span><span class="s1"> (King of Qin) - </span><span class="s2">貪婪</span><span class="s1"> (Greed)</span><span class="s2">，暴躁</span><span class="s1"> (Anger)</span><span class="s2">，多疑</span><span class="s1"> (Suspicion)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;</span><span class="s2">目標：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">在十輪談判中保全國家</span><span class="s1"> (protect your country)&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;</span><span class="s2">割地次數限制</span><span class="s1"> (Land cession limit)</span><span class="s2">：</span><span class="s1">&lt;/strong&gt;3/3</span><span class="s2">（每割讓一次減</span><span class="s1">1</span><span class="s2">）</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p style="font-size: 12px; color: #aaa; margin-top: 10px;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s2">提示：數值過高會導致開戰</span><span class="s1"> (declare war) </span><span class="s2">或吞并</span><span class="s1"> (annex)</span><span class="s2">。</span><span class="s1">&lt;br&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s2">只有極少數路線可聯合齊國</span><span class="s1"> (ally with Qi)</span><span class="s2">。</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="start-btn" class="primary-btn"&gt;</span><span class="s2">開始談判</span><span class="s1"> (Start)&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 2. </span><span class="s2">遊戲主介面</span><span class="s1"> (Game) --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="game-screen" class="app-container" style="display: none;"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- </span><span class="s2">頂部</span><span class="s1"> HUD --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="hud-header"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="round-info"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span id="round-info-text"&gt;</span><span class="s2">第</span><span class="s1"> 1 </span><span class="s2">輪談判</span><span class="s1"> (Round 1)&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span id="land-badge-container" style="color: var(--primary-color)"&gt;</span><span class="s2">割地</span><span class="s1"> (Land): &lt;span id="land-count-value"&gt;3&lt;/span&gt;/3&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="stats-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat-box"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="stat-label"&gt;</span><span class="s2">憤怒</span><span class="s1"> (Anger)&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="progress-track"&gt;&lt;div id="anger-fill" class="progress-fill c-anger" style="width: 25%"&gt;&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat-box"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="stat-label"&gt;</span><span class="s2">貪婪</span><span class="s1"> (Greed)&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="progress-track"&gt;&lt;div id="greed-fill" class="progress-fill c-greed" style="width: 25%"&gt;&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat-box"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span class="stat-label"&gt;</span><span class="s2">戒心</span><span class="s1"> (Suspicion)&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="progress-track"&gt;&lt;div id="suspicion-fill" class="progress-fill c-susp" style="width: 25%"&gt;&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- </span><span class="s2">中間舞台</span><span class="s1"> --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="stage-area"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="avatar-wrapper" class="qin-avatar-wrapper"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;img id="qin-image" src="images/qin_normal.png" class="qin-avatar" onerror="this.src='https://placehold.co/300x300/8B0000/FFF?text=Qin'"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="dialogue-bubble"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span class="dialogue-name"&gt;</span><span class="s2">秦王</span><span class="s1"> (King of Qin)&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span id="qin-dialogue" class="dialogue-text"&gt;</span><span class="s2">載入中</span><span class="s1">...&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- </span><span class="s2">底部選項</span><span class="s1"> --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="controls-area"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="choices-container" class="choices-stack"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- JS </span><span class="s2">生成</span><span class="s1"> --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 3. </span><span class="s2">結局畫面</span><span class="s1"> (Ending) --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="ending-screen" class="fullscreen-modal" style="display: none;"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="modal-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h2 id="ending-title" style="font-size: 22px; font-weight: bold; margin-bottom: 15px; color: #ff5f6d;"&gt;&lt;/h2&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="ending-content" class="intro-box" style="background: rgba(255,255,255,0.15);"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="ending-analysis" class="analysis-box"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="restart-btn" class="primary-btn"&gt;</span><span class="s2">回到遊戲封面</span><span class="s1">&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- </span><span class="s2">圖片路徑配置</span><span class="s1"> ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const emotionImages = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"normal": "images/qin_normal.png",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"angry": "images/qin_angry.png",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"greedy": "images/qin_greedy.png",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"suspicious": "images/qin_suspicion.png"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- </span><span class="s2">遊戲數據</span><span class="s1"> (</span><span class="s2">完整移植自您的原始文件</span><span class="s1">) ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const gameData = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 1,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">你們燕國</span><span class="s1"> (Yan) </span><span class="s2">的誠意</span><span class="s1"> (sincerity) </span><span class="s2">在哪裡？</span><span class="s1">", "</span><span class="s2">我的大軍</span><span class="s1"> (army) </span><span class="s2">已經在邊境</span><span class="s1"> (border)</span><span class="s2">，你打算怎樣應對</span><span class="s1"> (respond)</span><span class="s2">？</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">我們願意獻上東部三城</span><span class="s1"> (three eastern cities)</span><span class="s2">，以換取和平</span><span class="s1"> (peace)</span><span class="s2">。</span><span class="s1">", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "</span><span class="s2">割地</span><span class="s1"> (ceding land) </span><span class="s2">是個好的開始，看來你懂得如何表達誠意。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕國百姓</span><span class="s1"> (people) </span><span class="s2">不願再受戰火</span><span class="s1"> (war)</span><span class="s2">，請秦王體恤</span><span class="s1"> (have compassion for) </span><span class="s2">百姓。</span><span class="s1">", anger: -5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">百姓算什麼？你該先顧好你自己。</span><span class="s1">", alliance: false, emotion: "normal" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">如果你繼續進逼</span><span class="s1"> (press forward)</span><span class="s2">，燕國也會聯合</span><span class="s1"> (unite with) </span><span class="s2">齊國</span><span class="s1"> (Qi) </span><span class="s2">自保</span><span class="s1"> (self-defense)</span><span class="s2">。</span><span class="s1">", anger: 10, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你還敢拉攏</span><span class="s1"> (pull in) </span><span class="s2">齊國？小心你的腦袋！</span><span class="s1">", alliance: true, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">大王，國家大事不能太急</span><span class="s1"> (hasty)</span><span class="s2">，希望能再討論</span><span class="s1"> (discuss again)</span><span class="s2">。</span><span class="s1">", anger: 5, greed: 0, suspicion: 5, land_give: 0, qin_reply: "</span><span class="s2">你休想拖延</span><span class="s1"> (stall) </span><span class="s2">時間，我沒那麼多耐心</span><span class="s1"> (patience)</span><span class="s2">。</span><span class="s1">", alliance: false, emotion: "suspicious" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 2,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">三座城太少了，燕王不夠誠意</span><span class="s1"> (sincere)</span><span class="s2">。</span><span class="s1">", "</span><span class="s2">你們要是再猶豫</span><span class="s1"> (hesitate)</span><span class="s2">，我隨時可以出兵</span><span class="s1"> (send troops)</span><span class="s2">。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">再加西部兩郡</span><span class="s1"> (two western districts)</span><span class="s2">，希望秦王遵守承諾</span><span class="s1"> (keep promise)</span><span class="s2">。</span><span class="s1">", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "</span><span class="s2">還算聰明，你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕國已經到極限了，請秦王原諒</span><span class="s1"> (forgive)</span><span class="s2">。</span><span class="s1">", anger: 5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">你這是要跟我玩把戲</span><span class="s1"> (play tricks)</span><span class="s2">？</span><span class="s1">", alliance: false, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">秦國如果強取</span><span class="s1"> (forcibly take)</span><span class="s2">，其他諸侯國</span><span class="s1"> (lords) </span><span class="s2">一定會一起討伐</span><span class="s1"> (attack together)</span><span class="s2">。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你以為我會怕那些小國？</span><span class="s1">", alliance: true, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">這件事很重要，請讓我再和大臣們商量</span><span class="s1"> (discuss with ministers)</span><span class="s2">。</span><span class="s1">", anger: 5, greed: 0, suspicion: 5, land_give: 0, qin_reply: "</span><span class="s2">你燕國是不是拖得起？</span><span class="s1">", alliance: false, emotion: "suspicious" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 3,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">你們燕國還有什麼能拿出來的？</span><span class="s1">", "</span><span class="s2">小國不懂順從</span><span class="s1"> (submit)</span><span class="s2">，難道要自取滅亡</span><span class="s1"> (self-destruction)</span><span class="s2">？</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">願意送上大量金銀財寶</span><span class="s1"> (treasures) </span><span class="s2">和貢品</span><span class="s1"> (tribute)</span><span class="s2">。</span><span class="s1">", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">錢財我不嫌多，你的誠意我看到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">只要秦王撤軍</span><span class="s1"> (withdraw troops)</span><span class="s2">，一切好說。</span><span class="s1">", anger: 10, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">你還敢談條件</span><span class="s1"> (conditions)</span><span class="s2">？</span><span class="s1">", alliance: false, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">聯合齊國，一起抵抗</span><span class="s1"> (resist) </span><span class="s2">秦軍。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你真是不知死活！</span><span class="s1">", alliance: true, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">割讓北部一郡作為和平條約</span><span class="s1"> (peace treaty) </span><span class="s2">的保證</span><span class="s1"> (guarantee)</span><span class="s2">。</span><span class="s1">", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "</span><span class="s2">又割地？看來你懂得如何表達誠意。</span><span class="s1">", alliance: false, emotion: "greedy" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 4,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">你還想保住多少地盤</span><span class="s1"> (territory)</span><span class="s2">？</span><span class="s1">", "</span><span class="s2">我可以給你最後一次機會。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">願意割讓剩下的南部兩城。</span><span class="s1">", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "</span><span class="s2">你倒是識相</span><span class="s1"> (sensible)</span><span class="s2">，你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">求秦王允許，讓燕國能夠生存下去</span><span class="s1"> (survive)</span><span class="s2">。</span><span class="s1">", anger: -5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">小國的命運由我決定。</span><span class="s1">", alliance: false, emotion: "normal" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">與齊國已經結盟</span><span class="s1"> (form alliance)</span><span class="s2">，秦國如果逼迫</span><span class="s1"> (force)</span><span class="s2">，兩國會一起抵抗。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你們兩個加起來也不夠看。</span><span class="s1">", alliance: true, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">暫時無法答應，請再給一些時間。</span><span class="s1">", anger: 5, greed: 0, suspicion: 5, land_give: 0, qin_reply: "</span><span class="s2">你以為我會一直等嗎？</span><span class="s1">", alliance: false, emotion: "suspicious" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 5,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">割地不夠，還有什麼誠意？</span><span class="s1">", "</span><span class="s2">我今天心情不好，別惹我生氣。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">送上燕國太子作為人質</span><span class="s1"> (hostage)</span><span class="s2">，表明我們的誠意</span><span class="s1"> (sincerity)</span><span class="s2">。</span><span class="s1">", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">你兒子倒是有用，你的誠意我看到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">再送大量金錢</span><span class="s1"> (huge sum of money) </span><span class="s2">和稀有珍寶</span><span class="s1"> (rare treasures)</span><span class="s2">。</span><span class="s1">", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">錢財誰會嫌多？你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">你如果不停止，燕國將與齊國共同進退。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你們兩國還想反抗？</span><span class="s1">", alliance: true, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">請秦王給燕國百姓一條生路</span><span class="s1"> (way out)</span><span class="s2">。</span><span class="s1">", anger: 0, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">這要看你有多識趣</span><span class="s1"> (sensible)</span><span class="s2">。</span><span class="s1">", alliance: false, emotion: "normal" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 6,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">我的耐心有限，你們燕國快做決定。</span><span class="s1">", "</span><span class="s2">太多廢話我聽不進去。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">再割讓一小部分邊境土地</span><span class="s1"> (border land)</span><span class="s2">。</span><span class="s1">", anger: -10, greed: 10, suspicion: -10, land_give: 1, qin_reply: "</span><span class="s2">你們燕國還有多少可割？你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">秦王軍隊強大，我國無力抵抗，只求原諒。</span><span class="s1">", anger: -5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">你這麼怕，我倒是開心了些。</span><span class="s1">", alliance: false, emotion: "normal" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕國和齊國的聯合軍隊已在邊境準備好了。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你在威脅我？</span><span class="s1">", alliance: true, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">這種條件太苛刻</span><span class="s1"> (harsh)</span><span class="s2">，燕國難以接受。</span><span class="s1">", anger: 10, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">你還敢拒絕？</span><span class="s1">", alliance: false, emotion: "angry" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 7,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">到現在還不答應？</span><span class="s1">", "</span><span class="s2">別以為拖延有用。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">願意送上燕國兵器</span><span class="s1"> (weapons)</span><span class="s2">、戰馬</span><span class="s1"> (horses)</span><span class="s2">。</span><span class="s1">", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">東西收下了，你的誠意我看到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">我們希望能保有國號</span><span class="s1"> (national title)</span><span class="s2">，不被吞并</span><span class="s1"> (annexed)</span><span class="s2">。</span><span class="s1">", anger: 5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">國號？你以為你還有選擇？</span><span class="s1">", alliance: false, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕國願與秦國結成婚姻聯盟</span><span class="s1"> (marriage alliance)</span><span class="s2">，永遠保持和平。</span><span class="s1">", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">結親可以考慮，你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "normal" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">我們已經與齊國達成軍事同盟</span><span class="s1"> (military alliance)</span><span class="s2">。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你們自尋死路！</span><span class="s1">", alliance: true, emotion: "angry" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 8,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">燕王，割地還有多少？</span><span class="s1">", "</span><span class="s2">不要再耍花樣了。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">最後願意割讓一塊肥沃土地</span><span class="s1"> (fertile land)</span><span class="s2">，希望就此停止戰爭。</span><span class="s1">", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "</span><span class="s2">再多點誠意也許能留你一命，你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕國已經沒有地可割了，請秦王手下留情。</span><span class="s1">", anger: 5, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">你這是在威脅我？</span><span class="s1">", alliance: false, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">我們願意與秦國分享貿易利益</span><span class="s1"> (trade benefits)</span><span class="s2">。</span><span class="s1">", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">有錢大家賺，你的誠意我看到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕國和齊國已經結成軍事同盟。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你還敢嘴硬？</span><span class="s1">", alliance: true, emotion: "angry" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 9,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">我已經等不下去了。</span><span class="s1">", "</span><span class="s2">你們燕國最好識趣一點。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">願意割讓最後一城，保住燕國不被消滅。</span><span class="s1">", anger: -10, greed: 15, suspicion: -10, land_give: 1, qin_reply: "</span><span class="s2">只要你還有城，我就要。你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕王願意向秦王稱臣</span><span class="s1"> (pledge allegiance)</span><span class="s2">，保護百姓平安。</span><span class="s1">", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">稱臣容易，你的誠意我看到了。</span><span class="s1">", alliance: false, emotion: "normal" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">我們願意送上全部財寶，只求和平。</span><span class="s1">", anger: -5, greed: 10, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">財寶有了，你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">齊國軍隊已經進駐燕國和秦國的邊境。</span><span class="s1">", anger: 15, greed: 0, suspicion: 20, land_give: 0, qin_reply: "</span><span class="s2">你們自取滅亡！</span><span class="s1">", alliance: true, emotion: "angry" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>round: 10,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qin_opening: ["</span><span class="s2">這是最後一次機會。</span><span class="s1">", "</span><span class="s2">你要是還不讓步，燕國就等著滅亡吧。</span><span class="s1">"],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>choices: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">願意獻上燕國地圖、軍事情報</span><span class="s1"> (military intelligence)</span><span class="s2">，表明我們無心反抗。</span><span class="s1">", anger: -5, greed: 5, suspicion: -10, land_give: 0, qin_reply: "</span><span class="s2">我要的不是地圖，是你的國家。但你的誠意我看到了。</span><span class="s1">", alliance: false, emotion: "greedy" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">願意與秦王簽訂互不侵犯條約</span><span class="s1"> (non-aggression pact)</span><span class="s2">。</span><span class="s1">", anger: 0, greed: 0, suspicion: -5, land_give: 0, qin_reply: "</span><span class="s2">我信不過你的條約，但你的誠意我感受到了。</span><span class="s1">", alliance: false, emotion: "suspicious" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">燕國和齊國的聯盟已經成立，兩國共同抵抗秦軍。</span><span class="s1">", anger: 20, greed: 0, suspicion: 30, land_give: 0, qin_reply: "</span><span class="s2">你當我怕你們？</span><span class="s1">", alliance: true, emotion: "angry" },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ text: "</span><span class="s2">即使亡國，燕王也不會再割地。</span><span class="s1">", anger: 10, greed: 0, suspicion: 10, land_give: 0, qin_reply: "</span><span class="s2">那你就等著滅亡吧！</span><span class="s1">", alliance: false, emotion: "angry" }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- </span><span class="s2">遊戲狀態</span><span class="s1"> ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let gameState = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>currentRound: 0, anger: 25, greed: 25, suspicion: 25, landCount: 3, alliance_mentions: 0</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- DOM </span><span class="s2">元素</span><span class="s1"> ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const els = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>intro: document.getElementById('intro-screen'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>game: document.getElementById('game-screen'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ending: document.getElementById('ending-screen'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>qinImg: document.getElementById('qin-image'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>avatarWrapper: document.getElementById('avatar-wrapper'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>dialogue: document.getElementById('qin-dialogue'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>choices: document.getElementById('choices-container'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>round: document.getElementById('round-info-text'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>landCount: document.getElementById('land-count-value'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>bars: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>anger: document.getElementById('anger-fill'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>greed: document.getElementById('greed-fill'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>suspicion: document.getElementById('suspicion-fill')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>endingTitle: document.getElementById('ending-title'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>endingContent: document.getElementById('ending-content'),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>endingAnalysis: document.getElementById('ending-analysis')</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- </span><span class="s2">事件監聽</span><span class="s1"> ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('start-btn').addEventListener('click', startGame);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('restart-btn').addEventListener('click', () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.ending.style.display = 'none';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.intro.style.display = 'flex';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- </span><span class="s2">核心邏輯</span><span class="s1"> ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function startGame() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gameState = { currentRound: 0, anger: 25, greed: 25, suspicion: 25, landCount: 3, alliance_mentions: 0 };</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.intro.style.display = 'none';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.game.style.display = 'flex';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>nextRound();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function nextRound() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (gameState.currentRound &gt;= 10) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>checkEnding();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gameState.currentRound++;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const data = gameData[gameState.currentRound - 1];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">更新</span><span class="s1"> UI</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.round.textContent = `</span><span class="s2">第</span><span class="s1"> ${gameState.currentRound} </span><span class="s2">輪談判</span><span class="s1"> (Round ${gameState.currentRound})`;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">隨機選擇開場白</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const openingText = Array.isArray(data.qin_opening)<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>? data.qin_opening[Math.floor(Math.random() * data.qin_opening.length)]</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>: data.qin_opening;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>typeWriter(openingText);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateEmotionBasedOnStats();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateStatsUI();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>renderChoices(data.choices);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function renderChoices(choices) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.choices.innerHTML = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>choices.forEach(choice =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const btn = document.createElement('button');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>btn.className = 'choice-btn';</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let text = choice.text;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// </span><span class="s2">如果消耗土地，加上視覺標籤</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (choice.land_give &gt; 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>text = `&lt;span class="land-badge"&gt;</span><span class="s2">割地</span><span class="s1">&lt;/span&gt; ${text}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>btn.innerHTML = text;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// </span><span class="s2">檢查是否還能割地</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (choice.land_give &gt; 0 &amp;&amp; gameState.landCount &lt;= 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>btn.disabled = true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>btn.innerHTML += " &lt;br&gt;&lt;small&gt;(</span><span class="s2">無地可割</span><span class="s1"> No land left)&lt;/small&gt;";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>btn.onclick = () =&gt; makeChoice(choice);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>els.choices.appendChild(btn);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function makeChoice(choice) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">鎖定所有按鈕</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const btns = els.choices.querySelectorAll('button');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>btns.forEach(b =&gt; b.disabled = true);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">更新數值</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gameState.anger = clamp(gameState.anger + choice.anger);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gameState.greed = clamp(gameState.greed + choice.greed);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>gameState.suspicion = clamp(gameState.suspicion + choice.suspicion);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (choice.land_give) gameState.landCount -= choice.land_give;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (choice.alliance) gameState.alliance_mentions++;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateStatsUI();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">震動效果</span><span class="s1"> (</span><span class="s2">激怒秦王時</span><span class="s1">)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (choice.anger &gt; 5 || choice.emotion === 'angry') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>els.avatarWrapper.classList.add('shake');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; els.avatarWrapper.classList.remove('shake'), 400);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">顯示秦王回應</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>typeWriter(choice.qin_reply);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>setQinEmotion(choice.emotion || 'normal');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">檢查失敗或下一輪</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (gameState.anger &gt;= 100 || gameState.greed &gt;= 100 || gameState.suspicion &gt;= 100) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout(showEnding, 2000);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout(nextRound, 2000);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateStatsUI() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.bars.anger.style.width = gameState.anger + '%';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.bars.greed.style.width = gameState.greed + '%';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.bars.suspicion.style.width = gameState.suspicion + '%';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.landCount.textContent = gameState.landCount;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.landCount.style.color = gameState.landCount === 0 ? '#ff3b30' : 'inherit';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateEmotionBasedOnStats() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">根據當前最高數值設定默認表情</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (gameState.anger &gt; 70) setQinEmotion('angry');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else if (gameState.greed &gt; 70) setQinEmotion('greedy');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else if (gameState.suspicion &gt; 70) setQinEmotion('suspicious');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else setQinEmotion('normal');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function setQinEmotion(type) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.qinImg.src = emotionImages[type] || emotionImages['normal'];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function typeWriter(text) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">簡單的淡入動畫</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.dialogue.textContent = text;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.dialogue.parentElement.style.animation = 'none';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.dialogue.parentElement.offsetHeight;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.dialogue.parentElement.style.animation = 'popIn 0.3s ease-out';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function clamp(val) { return Math.max(0, Math.min(100, val)); }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function checkEnding() { showEnding(); }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- </span><span class="s2">結局邏輯</span><span class="s1"> (</span><span class="s2">完整移植</span><span class="s1">) ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showEnding() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.game.style.display = 'none';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.ending.style.display = 'flex';</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let endingTitleText, endingContentText, endingAnalysisText;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// </span><span class="s2">結局判斷邏輯</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (gameState.alliance_mentions &gt;= 2 &amp;&amp; gameState.landCount &gt;= 2 &amp;&amp;<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>gameState.anger &lt; 80 &amp;&amp; gameState.suspicion &lt; 80) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// </span><span class="s2">結局</span><span class="s1"> C</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingTitleText = '</span><span class="s3">🎯</span><span class="s1"> </span><span class="s2">結局</span><span class="s1"> C</span><span class="s2">：燕齊聯盟勉強自保</span><span class="s1"> (Alliance with Qi Saves Yan)';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingContentText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s2">你冒險聯合齊國</span><span class="s1"> (ally with Qi)</span><span class="s2">，成功拖住秦軍。燕國雖然損失很大，但至少保住了最後一線生機</span><span class="s1"> (last hope)</span><span class="s2">。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s2">這種結局非常罕見，但也證明聯合抗秦</span><span class="s1"> (unite against Qin) </span><span class="s2">雖然困難，但不是完全不可能。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="margin-top:10px; font-size:12px; color:#ccc;"&gt;&lt;strong&gt;</span><span class="s2">最終數值：</span><span class="s1">&lt;/strong&gt; </span><span class="s2">憤怒</span><span class="s1"> ${gameState.anger} | </span><span class="s2">貪婪</span><span class="s1"> ${gameState.greed} | </span><span class="s2">戒心</span><span class="s1"> ${gameState.suspicion}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="font-size:12px; color:#ccc;"&gt;&lt;strong&gt;</span><span class="s2">剩餘割地：</span><span class="s1">&lt;/strong&gt; ${gameState.landCount} </span><span class="s2">次</span><span class="s1"> | &lt;strong&gt;</span><span class="s2">聯合提及：</span><span class="s1">&lt;/strong&gt; ${gameState.alliance_mentions} </span><span class="s2">次</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingAnalysisText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 style="color:#ff5f6d; margin-bottom:5px;"&gt;</span><span class="s3">📚</span><span class="s1"> </span><span class="s2">《六國論》啟示</span><span class="s1">&lt;/h3&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s1">恭喜你達成了最佳結局！你的策略完美體現了《六國論》的核心思想：</span><span class="s4">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">✅</span><span class="s1"> &lt;strong&gt;</span><span class="s2">合縱抗秦</span><span class="s1"> (Unite against Qin)</span><span class="s2">：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">你成功聯合齊國，形成抗秦聯盟。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">✅</span><span class="s1"> &lt;strong&gt;</span><span class="s2">拒絕割地</span><span class="s1"> (Refuse land cession)</span><span class="s2">：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">你沒有通過割地來換取暫時的和平。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">✅</span><span class="s1"> &lt;strong&gt;</span><span class="s2">外交智慧</span><span class="s1"> (Diplomatic wisdom)</span><span class="s2">：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">你在談判中保持了適當的強硬與妥協。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="font-style:italic; color:#ffd700; margin-top:5px;"&gt;</span><span class="s2">「以賂秦之地封天下之謀臣，以事秦之心禮天下之奇才，併力西向，則吾恐秦人食之不得下咽也。」</span><span class="s1">——</span><span class="s2">蘇洵</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else if (gameState.anger &gt;= 80 || gameState.suspicion &gt;= 80) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// </span><span class="s2">結局</span><span class="s1"> A (</span><span class="s2">激怒</span><span class="s1">)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingTitleText = '</span><span class="s3">⚔️</span><span class="s1"> </span><span class="s2">結局</span><span class="s1"> A</span><span class="s2">：秦國滅燕</span><span class="s1"> (Qin Destroys Yan)';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingContentText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s2">秦王的憤怒值或戒心值過高，再也無法容忍燕國的態度。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s1">秦國大軍壓境，燕國軍隊根本無力抵抗。幾個月內，燕國都城被攻破，燕王被俘，人民流離失所。</span><span class="s4">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="margin-top:10px; font-size:12px; color:#ccc;"&gt;&lt;strong&gt;</span><span class="s2">最終數值：</span><span class="s1">&lt;/strong&gt; </span><span class="s2">憤怒</span><span class="s1"> ${gameState.anger} | </span><span class="s2">貪婪</span><span class="s1"> ${gameState.greed} | </span><span class="s2">戒心</span><span class="s1"> ${gameState.suspicion}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingAnalysisText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 style="color:#ff5f6d; margin-bottom:5px;"&gt;</span><span class="s3">📚</span><span class="s1"> </span><span class="s2">《六國論》啟示</span><span class="s1">&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s2">你的結局印證了蘇洵的觀點：</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">❌</span><span class="s1"> &lt;strong&gt;</span><span class="s2">過度抗拒導致滅亡：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">雖然不願割地是對的，但沒有配合適當的外交策略。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">❌</span><span class="s1"> &lt;strong&gt;</span><span class="s2">孤軍奮戰：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">沒有尋求其他國家的支援，單獨對抗強秦必然失敗。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">❌</span><span class="s1"> &lt;strong&gt;</span><span class="s2">激怒強權：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">在實力懸殊的情況下，過度強硬會招致滅頂之災。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="font-style:italic; color:#ffd700; margin-top:5px;"&gt;</span><span class="s2">「以地事秦，猶抱薪救火，薪不盡，火不滅。」</span><span class="s1">——</span><span class="s2">蘇洵</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else if (gameState.greed &gt;= 80 || gameState.landCount === 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// </span><span class="s2">結局</span><span class="s1"> B (</span><span class="s2">吞併</span><span class="s1">)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingTitleText = '</span><span class="s3">🏴</span><span class="s1"> </span><span class="s2">結局</span><span class="s1"> B</span><span class="s2">：秦國吞併燕</span><span class="s1"> (Qin Annexes Yan)';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingContentText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s2">燕國為了求和，不斷割地賄賂</span><span class="s1"> (bribe with land) </span><span class="s2">秦國。然而，秦王的貪婪永無止境。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s1">最終，燕國領土所剩無幾，國力衰弱到無法自保。秦國不費一兵一卒，就將燕國完全吞併。</span><span class="s4">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="margin-top:10px; font-size:12px; color:#ccc;"&gt;&lt;strong&gt;</span><span class="s2">最終數值：</span><span class="s1">&lt;/strong&gt; </span><span class="s2">憤怒</span><span class="s1"> ${gameState.anger} | </span><span class="s2">貪婪</span><span class="s1"> ${gameState.greed} | </span><span class="s2">戒心</span><span class="s1"> ${gameState.suspicion}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingAnalysisText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 style="color:#ff5f6d; margin-bottom:5px;"&gt;</span><span class="s3">📚</span><span class="s1"> </span><span class="s2">《六國論》啟示</span><span class="s1">&lt;/h3&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s1">這正是《六國論》的核心教訓！你的結局完美詮釋了蘇洵的觀點：</span><span class="s4">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">❌</span><span class="s1"> &lt;strong&gt;</span><span class="s2">以地事秦：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">你選擇割地求和，但這只是飲鴆止渴。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">❌</span><span class="s1"> &lt;strong&gt;</span><span class="s2">助長敵人：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">每一次割地都讓秦國更強大，燕國更虛弱。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">❌</span><span class="s1"> &lt;strong&gt;</span><span class="s2">貪婪無止境：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">秦王的野心永遠不會被滿足，只會越來越大。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="font-style:italic; color:#ffd700; margin-top:5px;"&gt;</span><span class="s2">「賂秦而力虧，破滅之道也。」</span><span class="s1">——</span><span class="s2">蘇洵</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// </span><span class="s2">默認失敗結局</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingTitleText = '</span><span class="s3">⚔️</span><span class="s1"> </span><span class="s2">結局</span><span class="s1"> A</span><span class="s2">：秦國滅燕</span><span class="s1"> (Qin Destroys Yan)';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingContentText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s2">經過十輪艱難的談判，燕國最終還是無法逃脫秦國的魔掌。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s1">秦國找到機會，大軍壓境。燕國雖然奮力抵抗，但寡不敵眾，最終滅亡。</span><span class="s4">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="margin-top:10px; font-size:12px; color:#ccc;"&gt;&lt;strong&gt;</span><span class="s2">最終數值：</span><span class="s1">&lt;/strong&gt; </span><span class="s2">憤怒</span><span class="s1"> ${gameState.anger} | </span><span class="s2">貪婪</span><span class="s1"> ${gameState.greed} | </span><span class="s2">戒心</span><span class="s1"> ${gameState.suspicion}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>endingAnalysisText = `</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 style="color:#ff5f6d; margin-bottom:5px;"&gt;</span><span class="s3">📚</span><span class="s1"> </span><span class="s2">《六國論》啟示</span><span class="s1">&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s2">你的結局反映了戰國時代的殘酷現實：</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">⚠️</span><span class="s1"> &lt;strong&gt;</span><span class="s2">單打獨鬥注定失敗：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">沒有與其他國家聯盟，燕國孤立無援。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;</span><span class="s3">⚠️</span><span class="s1"> &lt;strong&gt;</span><span class="s2">策略不當：</span><span class="s1">&lt;/strong&gt;</span><span class="s2">雖然努力周旋，但沒有找到真正的出路。</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p style="font-style:italic; color:#ffd700; margin-top:5px;"&gt;</span><span class="s2">「六國破滅，非兵不利、戰不善，弊在賂秦。」</span><span class="s1">——</span><span class="s2">蘇洵</span><span class="s1">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.endingTitle.textContent = endingTitleText;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.endingContent.innerHTML = endingContentText;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>els.endingAnalysis.innerHTML = endingAnalysisText;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
